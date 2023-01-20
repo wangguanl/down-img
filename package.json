@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "node ./index.js"
+  },
+  "devDependencies": {
+    "await-to-js": "^3.0.0",
+    "request": "^2.88.2"
+  }
+}
