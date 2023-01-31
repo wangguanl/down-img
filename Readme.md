@@ -1,7 +1,7 @@
-# 将 HTML 页面转为 markdown
+# 将远程图片下载到本地
 
 ## 操作步骤
-1. 打开 `index.json` 文件，数组内填写要下载的文件链接
+1. 打开 `test/index.json` 文件，数组内填写要下载的文件链接
 ```bash
 yarn
 ```

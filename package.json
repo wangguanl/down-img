@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "node ./index.js"
+    "build": "node ./test/index.js"
   },
   "devDependencies": {
     "await-to-js": "^3.0.0",
