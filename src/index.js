@@ -1,22 +1,21 @@
-const FS = require('fs'),
-  Path = require('path'),
+const Path = require('path'),
   { statAsync, mkdirAsync, accessAsync } = require('./utils/node-utils'),
   { to } = require('await-to-js'),
-  request = require('request');
+  downImg = require('./down-img');
 
 /**
  * 下载网络图片
  * @param {object} opts
  */
-const downImg = (opts = {}, { output = './images', prefix }) =>
+module.exports = (opts = {}, { output = './dist', prefix = '', name = '' }) =>
   new Promise(async (resolve, reject) => {
     // 检查输出目录是否存在
     const [statOutputErr] = await to(statAsync(output));
     statOutputErr && (await to(mkdirAsync(output)));
 
-    let name =
+    name =
       (prefix ? prefix + '-' : '') +
-      new URL(opts.url).pathname.slice(1).replace(/\//g, '-');
+      (name || new URL(opts.url).pathname.slice(1).replace(/\//g, '-'));
 
     if (!Path.extname(name)) {
       name += '.png';
@@ -29,38 +28,5 @@ const downImg = (opts = {}, { output = './images', prefix }) =>
       resolve(path);
       return;
     }
-    request
-      .get(opts)
-      .on('response', async res => {
-        // console.log(res.headers['content-type']);
-        // path += '.' + res.headers['content-type'].split('/')[1];
-        /* res
-              .pipe(FS.createWriteStream(path))
-              .on('error', e => {
-                console.log('pipe error', e);
-                reject([e, path]);
-              })
-              .on('finish', () => {
-                resolve(path);
-              })
-              .on('close', () => {}); */
-      })
-      .pipe(FS.createWriteStream(path))
-      .on('error', e => {
-        console.log('pipe error', e);
-        reject([e, path]);
-      })
-      .on('finish', () => {
-        resolve(path);
-      })
-      .on('close', () => {});
+    downImg(opts, path);
   });
-
-/* downImg(
-  {
-    url: `https://mmbiz.qpic.cn/mmbiz_png/JdfjlwvwuTCFNIPLsWue7ZV6NxShjVOez9N4mG9J9KF6nuO7Hf1T7ewSyiaMysib021nP6G5no6J295nELQ0JMRg/640?wx_fmt=png`,
-  },
-  {}
-);
- */
-module.exports = downImg;

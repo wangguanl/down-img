@@ -9,4 +9,4 @@ yarn
 yarn build
 ```
 
-会生成 `images/*`
+会生成 `dist/*`
